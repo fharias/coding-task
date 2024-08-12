@@ -1,7 +1,9 @@
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import starredSlice from '../data/starredSlice'
 import watchLaterSlice from '../data/watchLaterSlice'
 import placeholder from '../assets/not-found-500X750.jpeg'
+import TrailerModal from './TrailerModal';
 
 const Movie = ({ movie, viewTrailer, closeCard }) => {
 
@@ -11,6 +13,10 @@ const Movie = ({ movie, viewTrailer, closeCard }) => {
     const { addToWatchLater, removeFromWatchLater } = watchLaterSlice.actions
 
     const dispatch = useDispatch()
+
+    const handleViewTrailer = () => {
+        viewTrailer(movie);
+    };
 
     const myClickHandler = (e) => {
         if (!e) var e = window.event
@@ -54,7 +60,7 @@ const Movie = ({ movie, viewTrailer, closeCard }) => {
                     ) : (
                         <button type="button" data-testid="remove-watch-later" className="btn btn-light btn-watch-later blue" onClick={() => dispatch(removeFromWatchLater(movie))}><i className="bi bi-check"></i></button>
                     )}
-                    <button type="button" className="btn btn-dark" onClick={() => viewTrailer(movie)}>View Trailer</button>                                                
+                    <button type="button" className="btn btn-primary" onClick={handleViewTrailer}>View Trailer</button>
                 </div>
                 <img className="center-block" src={(movie.poster_path) ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : placeholder} alt="Movie poster" />
             </div>

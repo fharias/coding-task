@@ -6,7 +6,7 @@ display.
 
 Write vanilla CSS for this. CSS preprocessors are allowed, but library solutions such as Bootstrap etc. are not.
 
-- [ ] DONE
+- [x] DONE
 
 ## Implement a modal to display the Youtube player
 The youtube player is currently displayed above the list of movies, please turn it into a modal which appears when the user clicks “view trailer”, users should be able to close the modal and return to the movie list
