@@ -12,6 +12,9 @@
     }
 
     .wrapper {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
         padding: 0 6px;
         margin-bottom: 2rem;
     }
