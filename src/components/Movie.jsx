@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import starredSlice from '../data/starredSlice'
 import watchLaterSlice from '../data/watchLaterSlice'
 import placeholder from '../assets/not-found-500X750.jpeg'
-import TrailerModal from './TrailerModal';
 
 const Movie = ({ movie, viewTrailer, closeCard }) => {
 

@@ -20,6 +20,7 @@ const App = () => {
   const [videoKey, setVideoKey] = useState(null)
   const [isOpen, setOpen] = useState(false)
   const [selectedMovie, setSelectedMovie] = useState(null)
+  const [page, setPage] = useState(1)
   const navigate = useNavigate()
   
   const closeModal = () => {
@@ -28,26 +29,39 @@ const App = () => {
     setSelectedMovie(null)
   }
 
-  const getSearchResults = (query) => {
+  const getSearchResults = (query, pageNum = 1) => {
     if (query !== '') {
-      dispatch(fetchMovies(`${ENDPOINT_SEARCH}&query=`+query))
+      dispatch(fetchMovies(`${ENDPOINT_SEARCH}&query=${query}&page=${pageNum}`))
       setSearchParams(createSearchParams({ search: query }))
     } else {
-      dispatch(fetchMovies(ENDPOINT_DISCOVER))
+      dispatch(fetchMovies(`${ENDPOINT_DISCOVER}&page=${pageNum}`))
       setSearchParams()
     }
   }
 
   const searchMovies = (query) => {
     navigate('/')
+    setPage(1)
     getSearchResults(query)
   }
 
-  const getMovies = () => {
+  const getMovies = (pageNum = 1) => {
     if (searchQuery) {
-        dispatch(fetchMovies(`${ENDPOINT_SEARCH}&query=`+searchQuery))
+      dispatch(fetchMovies(`${ENDPOINT_SEARCH}&query=${searchQuery}&page=${pageNum}`))
     } else {
-        dispatch(fetchMovies(ENDPOINT_DISCOVER))
+      dispatch(fetchMovies(`${ENDPOINT_DISCOVER}&page=${pageNum}`))
+    }
+  }
+
+  const loadMoreMovies = () => {
+    const currentPage = movies.movies.page;
+    const nextPage = currentPage + 1;
+    if (nextPage <= movies.movies.total_pages) {
+      if (searchQuery) {
+        dispatch(fetchMovies(`${ENDPOINT_SEARCH}&query=${searchQuery}&page=${nextPage}`));
+      } else {
+        dispatch(fetchMovies(`${ENDPOINT_DISCOVER}&page=${nextPage}`));
+      }
     }
   }
 
@@ -73,6 +87,20 @@ const App = () => {
   }
 
   useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop ===
+        document.documentElement.offsetHeight
+      ) {
+        loadMoreMovies();
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [movies.movies.page, movies.movies.total_pages, searchQuery]);
+
+  useEffect(() => {
     getMovies()
   }, [])
 
@@ -81,9 +109,8 @@ const App = () => {
       <Header searchMovies={searchMovies} searchParams={searchParams} setSearchParams={setSearchParams} />
 
       <div className="container">
-
         <Routes>
-          <Route path="/" element={<Movies movies={movies} viewTrailer={viewTrailer} />} />
+          <Route path="/" element={<Movies movies={movies.movies} viewTrailer={viewTrailer} loadMoreMovies={loadMoreMovies} />} />
           <Route path="/starred" element={<Starred viewTrailer={viewTrailer} />} />
           <Route path="/watch-later" element={<WatchLater viewTrailer={viewTrailer} />} />
           <Route path="*" element={<h1 className="not-found">Page Not Found</h1>} />
