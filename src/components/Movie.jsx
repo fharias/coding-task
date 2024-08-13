@@ -1,3 +1,4 @@
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import starredSlice from '../data/starredSlice'
 import watchLaterSlice from '../data/watchLaterSlice'
@@ -12,6 +13,10 @@ const Movie = ({ movie, viewTrailer, closeCard }) => {
 
     const dispatch = useDispatch()
 
+    const handleViewTrailer = () => {
+        viewTrailer(movie);
+    };
+
     const myClickHandler = (e) => {
         if (!e) var e = window.event
         e.cancelBubble = true
@@ -20,8 +25,7 @@ const Movie = ({ movie, viewTrailer, closeCard }) => {
     }
 
     return (
-        <div className="wrapper col-3 col-sm-4 col-md-3 col-lg-3 col-xl-2">
-        <div className="card" onClick={(e) => e.currentTarget.classList.add('opened')} >
+        <div className="card" onClick={(e) => e.currentTarget.classList.add('opened')}>
             <div className="card-body text-center">
                 <div className="overlay" />
                 <div className="info_panel">
@@ -55,7 +59,7 @@ const Movie = ({ movie, viewTrailer, closeCard }) => {
                     ) : (
                         <button type="button" data-testid="remove-watch-later" className="btn btn-light btn-watch-later blue" onClick={() => dispatch(removeFromWatchLater(movie))}><i className="bi bi-check"></i></button>
                     )}
-                    <button type="button" className="btn btn-dark" onClick={() => viewTrailer(movie)}>View Trailer</button>                                                
+                    <button type="button" className="btn btn-primary" onClick={handleViewTrailer}>View Trailer</button>
                 </div>
                 <img className="center-block" src={(movie.poster_path) ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : placeholder} alt="Movie poster" />
             </div>
@@ -65,7 +69,6 @@ const Movie = ({ movie, viewTrailer, closeCard }) => {
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-    </div>        
     )
 }
 
