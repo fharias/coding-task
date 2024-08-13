@@ -11,9 +11,9 @@ Write vanilla CSS for this. CSS preprocessors are allowed, but library solutions
 ## Implement a modal to display the Youtube player
 The youtube player is currently displayed above the list of movies, please turn it into a modal which appears when the user clicks “view trailer”, users should be able to close the modal and return to the movie list
 
-- [ ] DONE
+- [x] DONE
 
 ## Implement infinite scrolling
 The movie list in home page and search results does not have the option to load more data, please extend its functionality with infinite scrolling capabilities, implementing your own HOC or hook in the solution is a bonus
 
-- [ ] DONE
+- [x] DONE
